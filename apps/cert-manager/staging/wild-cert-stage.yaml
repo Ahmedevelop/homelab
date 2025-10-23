@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wild-devirthas-com-staging
+  namespace: default
+spec:
+  secretName: wild-devirthas-com-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.devirthas.com"
+  dnsNames:
+    - "devirthas.com"
+    - "*.devirthas.com"

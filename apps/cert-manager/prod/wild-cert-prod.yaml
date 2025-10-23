@@ -1,0 +1,24 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wild-devirthas-com-internal
+  namespace: traefik-internal
+spec:
+  secretName: wild-devirthas-com-int-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "*.devirthas.com"
+  dnsNames:
+    - "devirthas.com"
+    - "*.devirthas.com"
+---
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: traefik-internal
+spec:
+  defaultCertificate:
+    secretName: wild-devirthas-com-int-tls

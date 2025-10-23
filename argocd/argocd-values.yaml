@@ -1,0 +1,20 @@
+---
+# Minimal, sane defaults for first boot
+global:
+  domain: "argocd.devirthas.com"                        # set if you plan to expose with Ingress later
+
+server:
+  # If you’ll put ArgoCD behind your Traefik/Ingress, keep ClusterIP
+  service:
+    type: ClusterIP
+  # If you’ll access via port-forward during bootstrap, make UI not require TLS at pod:
+  config:
+    # allows plaintext at the /api server inside cluster (fine behind Ingress/port-forward)
+    params:
+      server.insecure: "true"
+
+configs:
+  # optional: set admin password hash to avoid random one
+  # run:  htpasswd -nbBC 10 "" 'YourStrongPass' | tr -d ':\n' | sed 's/$2y/$2a/'
+    secret:
+      argocdServerAdminPassword: "$2a$10$fRP6NpyaZZ/hWM63CS052ePsk4uFUe5DyqNK9JZWcahBevyJl209q"
