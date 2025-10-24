@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik-external
+  namespace: argocd
+  annotations:
+    # Helm (controller+CRDs) first, then your YAML
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik-external
+  sources:
+    # 1) Helm source: cert-manager itself
+    - repoURL: https://traefik.github.io/charts
+      chart: traefik
+      targetRevision: v3.5.3        
+      helm:
+        parameters:
+          - name: installCRDs
+            value: "true"
+        # (optional) if you have a values file in your repo, add:
+        valueFiles:
+          - $values/apps/traefik/external/values.yaml
+    # Ref 
+    - repoURL: git@github.com:Ahmedevelop/homelab.git
+      targetRevision: main
+      ref: values
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      # Avoids dry-run failures before CRDs from Helm exist:
+      - SkipDryRunOnMissingResource=true
+      # Helpful for big diffs and CRDs:
+      - ServerSideApply=true
