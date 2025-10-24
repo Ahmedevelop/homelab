@@ -30,7 +30,7 @@ providers:
     ingressClass: traefik-internal
   kubernetesCRD:
     namespaces:
-      - traefik-external
+      - traefik-internal
 
 ingressClass:
   enabled: true
