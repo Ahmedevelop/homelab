@@ -4,4 +4,3 @@ kind: L2Advertisement
 metadata: 
   name: metallb-pool
   namespace: metallb-system
----

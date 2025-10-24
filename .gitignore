@@ -1,0 +1,69 @@
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# IDE / Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# Node / JS
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.env
+.venv/
+venv/
+
+# Helm / K8s
+charts/
+tmpcharts/
+*.tgz
+release.yaml
+values.schema.json
+values.override.yaml
+
+# Terraform (if you keep infra as code)
+.terraform/
+terraform.tfstate*
+*.tfvars
+crash.log
+
+# ArgoCD & Secrets
+secrets.yaml
+*.enc.yaml
+*.secret.yaml
+*.age
+*.gpg
+*.pem
+*.crt
+*.key
+*.p12
+*.pfx
+*.env
+
+# Local development
+*.log
+.envrc
+*.local.yaml
+*.local.yml
+
+# Misc
+backup/
+tmp/
+cache/
+*.bak
+*.old
+*.orig
