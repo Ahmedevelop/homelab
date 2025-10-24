@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-external
+  name: traefik-internal
   namespace: argocd
   annotations:
     # Helm (controller+CRDs) first, then your YAML
@@ -11,7 +11,7 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: traefik-external
+    namespace: traefik-internal
   sources:
     # 1) Helm source: cert-manager itself
     - repoURL: https://traefik.github.io/charts
@@ -23,7 +23,7 @@ spec:
             value: "true"
         # (optional) if you have a values file in your repo, add:
         valueFiles:
-          - $values/apps/traefik/external/values.yaml
+          - $values/apps/traefik/internal/values.yaml
     # Ref 
     - repoURL: git@github.com:Ahmedevelop/homelab.git
       targetRevision: main
