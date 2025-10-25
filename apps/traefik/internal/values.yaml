@@ -12,7 +12,7 @@ ingressRoute:
     # Custom match rule with host domain
     matchRule: Host(`traefik.devirthas.com`)
     entryPoints: ["websecure"]
-    # Add custom middlewares : authentication and redirection
+    # Adding custom middleware
     middlewares:
       - name: traefik-dashboard-auth
 

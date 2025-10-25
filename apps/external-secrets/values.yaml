@@ -1,0 +1,7 @@
+---
+installCRDs: true
+
+bitwarden-sdk-server:
+  enabled: true
+  service:
+    port: 9998
