@@ -12,7 +12,7 @@ spec:
     chart: argo-cd
     helm:
       valueFiles:
-        - $values/argocd/argocd-values.yaml
+        - $values/argocd/values.yaml
       releaseName: argocd
   destination:
     server: https://kubernetes.default.svc
