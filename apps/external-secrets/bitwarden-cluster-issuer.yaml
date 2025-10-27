@@ -19,8 +19,8 @@ spec:
   isCA: true
   commonName: bitwarden-root-ca
   secretName: bitwarden-root-ca
-  duration: 87600h        # 10y
-  renewBefore: 2160h      # 90d
+  duration: "87600h0m0s"       # 10y
+  renewBefore: "2160h0m0s"      # 90d
   privateKey:
     algorithm: RSA
     size: 2048
@@ -48,8 +48,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "3"     # 3) leaf cert for SDK server (after signer exists)
 spec:
   secretName: bitwarden-tls-certs
-  duration: 17520h        # 2y
-  renewBefore: 2160h
+  duration: "17520h0m0s"        # 2y
+  renewBefore: "2160h0m0s"
   privateKey:
     algorithm: RSA
     size: 2048
