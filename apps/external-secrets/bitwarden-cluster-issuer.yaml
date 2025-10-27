@@ -35,6 +35,7 @@ metadata:
   name: bitwarden-certificate-issuer
   annotations:
     argocd.argoproj.io/sync-wave: "2"     # 2) signer that uses the new root CA
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   ca:
     secretName: bitwarden-root-ca
