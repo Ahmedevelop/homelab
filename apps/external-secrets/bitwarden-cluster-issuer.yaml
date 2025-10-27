@@ -1,0 +1,67 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: bitwarden-bootstrap-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"     # 0) self-signed bootstrap
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bitwarden-root-ca
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"     # 1) issue long-lived root CA from bootstrap
+spec:
+  isCA: true
+  commonName: bitwarden-root-ca
+  secretName: bitwarden-root-ca
+  duration: 87600h        # 10y
+  renewBefore: 2160h      # 90d
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: bitwarden-bootstrap-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: bitwarden-certificate-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"     # 2) signer that uses the new root CA
+spec:
+  ca:
+    secretName: bitwarden-root-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bitwarden-sdk-server-cert
+  namespace: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"     # 3) leaf cert for SDK server (after signer exists)
+spec:
+  secretName: bitwarden-tls-certs
+  duration: 17520h        # 2y
+  renewBefore: 2160h
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  dnsNames:
+    - bitwarden-sdk-server.external-secrets.svc.cluster.local
+    - bitwarden-sdk-server.external-secrets.svc
+    - bitwarden-sdk-server.external-secrets
+    - localhost
+  ipAddresses:
+    - 127.0.0.1
+    - ::1
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: bitwarden-certificate-issuer
