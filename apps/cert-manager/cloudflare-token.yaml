@@ -1,0 +1,16 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: cloudflare-token-secret # secret name
+  namespace: cert-manager
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    # This name must match the metadata.name in the `ClusterSecretStore`
+    name: bitwarden
+    kind: ClusterSecretStore
+  data:
+  - secretKey: cloudflare-token # data key name
+    remoteRef:
+      key: 28698974-60f5-468b-b418-b3840067e32f # UUID from BitWarden
