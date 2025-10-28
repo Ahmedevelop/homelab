@@ -1,0 +1,16 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: traefik-dashboard-auth-secret # secret name
+  namespace: traefik-internal
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    # This name must match the metadata.name in the `ClusterSecretStore`
+    name: bitwarden
+    kind: ClusterSecretStore
+  data:
+  - secretKey: users # data key name
+    remoteRef:
+      key: 9cdeeace-7561-46a1-a636-b384006c6dd6 # UUID from BitWarden
