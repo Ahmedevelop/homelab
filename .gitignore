@@ -35,7 +35,7 @@ release.yaml
 values.schema.json
 values.override.yaml
 
-# Terraform (if you keep infra as code)
+# Terraform
 .terraform/
 terraform.tfstate*
 *.tfvars
