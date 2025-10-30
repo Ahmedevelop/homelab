@@ -1,0 +1,24 @@
+---
+nfs:
+  server: 192.168.8.101               
+  path: /data/nfs/k8s                 
+
+storageClass:
+  name: nfs-storage
+  defaultClass: true                 
+  reclaimPolicy: Delete              # can be changed to Retain, revisit later
+  allowVolumeExpansion: true
+  archiveOnDelete: true              # сохранять подпапку PV при удалении PVC
+  # auto creates subfolders on set pattern
+  pathPattern: "${.PVC.namespace}/${.PVC.name}"
+
+namespace: nfs-provisioner
+
+# Минимальные ресурсы (можно убрать)
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
