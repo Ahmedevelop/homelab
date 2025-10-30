@@ -8,13 +8,10 @@ storageClass:
   defaultClass: true                 
   reclaimPolicy: Delete              # can be changed to Retain, revisit later
   allowVolumeExpansion: true
-  archiveOnDelete: true              # сохранять подпапку PV при удалении PVC
+  archiveOnDelete: true              # save folder on file server upon PV deletion
   # auto creates subfolders on set pattern
   pathPattern: "${.PVC.namespace}/${.PVC.name}"
-
 namespace: nfs-provisioner
-
-# Минимальные ресурсы (можно убрать)
 resources:
   requests:
     cpu: 50m
