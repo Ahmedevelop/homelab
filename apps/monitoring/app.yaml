@@ -13,10 +13,10 @@ spec:
     namespace: monitoring
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-community
-      targetRevision: 0.86.1
+      chart: kube-prometheus-stack          
+      targetRevision: 79.0.1                
       helm:
-        releaseName: prometheus-community
+        releaseName: monitoring             
         valueFiles:
           - $values/apps/monitoring/values.yaml
     - repoURL: git@github.com:Ahmedevelop/homelab.git
