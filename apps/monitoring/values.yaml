@@ -1,0 +1,94 @@
+# ----- Prometheus -----
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    retentionSize: "15GiB"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: nfs-storage     # <<< ТВОЙ storageClass
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+    # Авто-discovery K8s
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+
+# ----- Alertmanager -----
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: nfs-storage    
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      receiver: 'default'
+      group_by: ['alertname','namespace','job']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 3h
+      routes:
+      - matchers:
+          - severity="critical"
+        receiver: 'critical'
+    receivers:
+    - name: 'default'
+      # примеры каналов (пока пустые). Позже подключишь Slack/Email/Telegram:
+      # slack_configs:
+      # - api_url: '<webhook>'
+      #   channel: '#alerts'
+    - name: 'critical'
+      # pagerduty_configs:
+      # - routing_key: '<pd-key>'
+
+# ----- Grafana -----
+grafana:
+  enabled: true
+  admin:
+    existingSecret: grafana-admin          # из ESO
+    userKey: grafana-user
+    passwordKey: grafana-password
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: nfs-storage            # <<< ТВОЙ storageClass
+    accessModes: ["ReadWriteOnce"]
+    size: 5Gi
+  service:
+    type: ClusterIP
+    port: 3000
+  # Автопровиженинг datasource на Prometheus (внутренний сервис чарта)
+  additionalDataSources:
+    - name: Prometheus
+      type: prometheus
+      url: http://monitoring-kube-prometheus-prometheus.monitoring.svc:9090
+      access: proxy
+      isDefault: true
+  ingress:
+    enabled: true
+    ingressClassName: traefik-internal
+    hosts:
+      - grafana.devirthas.com
+
+# Kube-state-metrics и node-exporter нужны — оставляем дефолт
+kube-state-metrics:
+  enabled: true
+
+prometheus-node-exporter:
+  enabled: true
+
+# alertmanager:
+#   ingress:
+#     enabled: false
+# prometheus:
+#   ingress:
+#     enabled: false
