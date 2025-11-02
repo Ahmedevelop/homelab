@@ -4,6 +4,8 @@ kind: Certificate
 metadata:
   name: wild-devirthas-com-internal
   namespace: traefik-internal
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   secretName: wild-devirthas-com-int-tls
   issuerRef:
