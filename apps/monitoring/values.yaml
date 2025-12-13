@@ -6,12 +6,11 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: nfs-storage     # <<< ТВОЙ storageClass
+          storageClassName: nfs-storage     # <<< storageClass
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
               storage: 20Gi
-    # Авто-discovery K8s
     scrapeInterval: 30s
     evaluationInterval: 30s
 
@@ -42,7 +41,7 @@ alertmanager:
         receiver: 'critical'
     receivers:
     - name: 'default'
-      # примеры каналов (пока пустые). Позже подключишь Slack/Email/Telegram:
+      # Slack/Email/Telegram:
       # slack_configs:
       # - api_url: '<webhook>'
       #   channel: '#alerts'
@@ -54,32 +53,32 @@ alertmanager:
 grafana:
   enabled: true
   admin:
-    existingSecret: grafana-admin          # из ESO
+    existingSecret: grafana-admin          # from ESO
     userKey: grafana-user
     passwordKey: grafana-password
   persistence:
     enabled: true
     type: pvc
-    storageClassName: nfs-storage            # <<< ТВОЙ storageClass
+    storageClassName: nfs-storage            # <<<  storageClass
     accessModes: ["ReadWriteOnce"]
     size: 5Gi
   service:
     type: ClusterIP
     port: 3000
-  # Автопровиженинг datasource на Prometheus (внутренний сервис чарта)
+  # datasource Prometheus 
   additionalDataSources:
     - name: Prometheus
       type: prometheus
       url: http://monitoring-kube-prometheus-prometheus.monitoring.svc:9090
       access: proxy
-      isDefault: true
+      isDefault: false
   ingress:
     enabled: true
     ingressClassName: traefik-internal
     hosts:
       - grafana.devirthas.com
 
-# Kube-state-metrics и node-exporter нужны — оставляем дефолт
+# Kube-state-metrics и node-exporter 
 kube-state-metrics:
   enabled: true
 
