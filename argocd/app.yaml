@@ -24,6 +24,6 @@ spec:
     syncOptions:
       - CreateNamespace=true
   sources:
-    - repoURL: git@github.com:Ahmeddevelop/homelab.git
+    - repoURL: git@github.com:Ahmedevelop/homelab.git
       targetRevision: main
       ref: values
