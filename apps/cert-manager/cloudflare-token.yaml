@@ -12,7 +12,14 @@ spec:
     # This name must match the metadata.name in the `ClusterSecretStore`
     name: bitwarden
     kind: ClusterSecretStore
+  # defaults stated explicitly so ArgoCD's server-side-apply diff stays clean
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
   data:
   - secretKey: cloudflare-token # data key name
     remoteRef:
       key: 28698974-60f5-468b-b418-b3840067e32f # UUID from BitWarden
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
