@@ -12,6 +12,14 @@ podDnsConfig:
   nameservers:
     - "1.1.1.1"
     - "9.9.9.9"
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    labels:
+      # kube-prometheus-stack only picks up ServiceMonitors with its release label
+      release: monitoring
 startupapicheck:
   enabled: true
   serviceAccount:
