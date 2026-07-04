@@ -1,5 +1,8 @@
 ---
-installCRDs: true
+crds:
+  enabled: true
+  # keep CRDs on uninstall so Certificates/Issuers aren't wiped with them
+  keep: true
 replicaCount: 1
 extraArgs:
   - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
@@ -9,9 +12,6 @@ podDnsConfig:
   nameservers:
     - "1.1.1.1"
     - "9.9.9.9"
-rbac:
-  create: true
-
 startupapicheck:
   enabled: true
   serviceAccount:
